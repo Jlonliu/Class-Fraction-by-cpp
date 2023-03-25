@@ -2,12 +2,12 @@
 
 [toc]
 
-a fraction of class to deal with precision number. like 0.333333333333*3 not is 1,but 1/3*3 is 1.
+a fraction of class to deal with precision number.
+like 0.333333333333*3 not is 1,but 1/3*3 is 1.
 这是一个分数类（1/3），用来处理精确数值。
-
-比如double类下0.33333333333*3大概率会得到1；*
-
-*而Fraction计算0.333333333333*3=0.999999999999（惊！几个3几个9...）；Fraction计算1/3*3才等于1。
+比如double类下0.33333333333*3大概率会得到1。
+而Fraction计算0.333333333333*3=0.999999999999（惊！几个3几个9...）。
+Fraction计算1/3*3才等于1。
 
 ## 优势
 
