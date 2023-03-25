@@ -30,8 +30,7 @@ Fraction计算1/3*3才等于1。
 
 
 ### 构造函数
-  - Fraction(int64_t)
-  - Fraction(double)
+  - Fraction(数值)
   - Fraction(int64_t 分子, int64_t 分母)
   
 ### Int64()
