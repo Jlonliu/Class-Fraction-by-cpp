@@ -4,9 +4,9 @@
 //分数类的精度仅仅比double多了两位，但是内存大小却翻了倍，而且无法像double一样存储大数
 //那么我编写分数类的意义何在？
 //我编写分数类的最重要的一点是为了能够得到如下的数字：
-//我想要看到的是10.0而不是9.9999999999999999999999999999999
-//我也不想看到运算中一个0.0000000000000000001因为与一个大数相乘得到了0.1这样的影响数值分析的数
-
+//我想要看到的是10.0而不是9.999999999999999999
+//我也不想看到运算中一个0.0000000000000001因为与一个大数相乘得到了0.1这样的影响数值分析的数
+#include "mathop.h"
 #include<iostream>
 using namespace std;
 
@@ -18,13 +18,14 @@ private:
 	Ftype numer_ = 0;//分子
 	Ftype denomin_ = 1;//分母
 	void __fraction_simplify(void);//分数约分
-	Ftype __least_common_multiple(const Ftype,const Ftype);//最小公倍数
 
 public:
 	Fraction() {}
 	~Fraction() {}
-	Fraction(Ftype num);//int型数值转化为分数
-	Fraction(double num);//double型数值转化为分数
+	template<class T>
+	Fraction(T num) { numer_ = num; }//对于int或者char，直接赋值给分子
+	template<> Fraction(float num);//对于float
+	template<> Fraction(double num);//	double时，进行运算后转化为分数
 	Fraction(Ftype numer, Ftype denomin);//分数的正规构建函数
 
 	void SetNumerator(const Ftype);//设置分子
@@ -35,29 +36,31 @@ public:
 	double Double(void)const;//返回double化的分数
 	
 	void operator=(const Fraction&);
-	void operator=(const Ftype);
-	void operator=(const double);
+	template<class T>
+	void operator=(const T num) { *this = Fraction(num); }
+
 	Fraction operator+(const Fraction&)const;
-	Fraction operator+(const Ftype)const;
-	Fraction operator+(const double)const;
 	Fraction operator-(const Fraction&)const;
-	Fraction operator-(const Ftype)const;
-	Fraction operator-(const double)const;
 	Fraction operator*(const Fraction&)const;
-	Fraction operator*(const Ftype)const;
-	Fraction operator*(const double)const;
 	Fraction operator/(const Fraction&)const;
-	Fraction operator/(const Ftype)const;
-	Fraction operator/(const double)const;
+
+	template<class T>
+	Fraction operator+(const T num)const { return *this + Fraction(num); }
+	template<class T>
+	Fraction operator-(const T num)const { return *this - Fraction(num); }
+	template<class T>
+	Fraction operator*(const T num)const { return *this * Fraction(num); }
+	template<class T>
+	Fraction operator/(const T num)const { return *this / Fraction(num); }
 	
-	friend Fraction operator+(const Ftype,const Fraction&);
-	friend Fraction operator+(const double, const Fraction&);
-	friend Fraction operator-(const Ftype, const Fraction&);
-	friend Fraction operator-(const double, const Fraction&);
-	friend Fraction operator*(const Ftype, const Fraction&);
-	friend Fraction operator*(const double, const Fraction&);
-	friend Fraction operator/(const Ftype, const Fraction&);
-	friend Fraction operator/(const double, const Fraction&);
+	template<class T>
+	friend Fraction operator+(const T num,const Fraction& frac){ return Fraction(num) + frac; }
+	template<class T>
+	friend Fraction operator-(const T num, const Fraction& frac) { return Fraction(num) - frac; }
+	template<class T>
+	friend Fraction operator*(const T num, const Fraction& frac) { return Fraction(num) * frac; }
+	template<class T>
+	friend Fraction operator/(const T num, const Fraction& frac) { return Fraction(num) / frac; }
 
 	friend ostream& operator<<(ostream&, const Fraction&);
 };
